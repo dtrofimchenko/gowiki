@@ -30,8 +30,8 @@ func main() {
 	actions = append(actions, "edit")
 	http.HandleFunc("/save/", makeHandler(saveHandler))
 	actions = append(actions, "save")
+	http.HandleFunc("/", rootHandler)
 
-	
 	validPath = regexp.MustCompile("^/(" + strings.Join(actions, "|") + ")/([a-zA-Z0-9]+)$")
 
 	http.ListenAndServe(":8080", nil)
@@ -49,6 +49,11 @@ func loadPage(title string) (*Page, error) {
 		return nil, err
 	}
 	return &Page{Title: title, Body: body}, nil
+}
+
+func rootHandler(w http.ResponseWriter, r *http.Request) {
+	http.Redirect(w, r, "/view/FrontPage", http.StatusFound)
+	return
 }
 
 func viewHandler(w http.ResponseWriter, r *http.Request, title string) {
