@@ -17,9 +17,9 @@ type Page struct {
 	Body  []byte
 }
 
-var tmplDir = "tmpl";
-var dataDir = "data";
-var	actions = []string{}
+var tmplDir = "tmpl"
+var dataDir = "data"
+var actions = []string{}
 var validPath *regexp.Regexp
 var templates = template.Must(template.ParseFiles(tmplDir + "/edit.html", tmplDir + "/view.html"))
 
