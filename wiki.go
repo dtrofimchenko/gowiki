@@ -27,6 +27,7 @@ var templates = map[string]*template.Template{
 }
 var baseTmplName = "base";
 
+
 func main() {
 	http.HandleFunc("/view/", makeHandler(viewHandler))
 	actions = append(actions, "view")
