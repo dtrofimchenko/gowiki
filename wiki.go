@@ -21,7 +21,11 @@ var tmplDir = "tmpl"
 var dataDir = "data"
 var actions = []string{}
 var validPath *regexp.Regexp
-var templates = template.Must(template.ParseFiles(tmplDir + "/edit.html", tmplDir + "/view.html"))
+var templates = map[string]*template.Template{
+	"view": nil,
+	"edit": nil,
+}
+var baseTmplName = "base";
 
 func main() {
 	http.HandleFunc("/view/", makeHandler(viewHandler))
@@ -33,6 +37,11 @@ func main() {
 	http.HandleFunc("/", rootHandler)
 
 	validPath = regexp.MustCompile("^/(" + strings.Join(actions, "|") + ")/([a-zA-Z0-9]+)$")
+	
+	for k, _ := range templates { 
+	    templates[k] =
+		    template.Must(template.ParseFiles(tmplDir + "/" + k + ".html", tmplDir + "/" + baseTmplName + ".html"))
+	}
 
 	http.ListenAndServe(":8080", nil)
 }
@@ -85,7 +94,7 @@ func saveHandler(w http.ResponseWriter, r *http.Request, title string) {
 }
 
 func renderTemplate(w http.ResponseWriter, tmpl string, p *Page) {
-	//err := templates.ExecuteTemplate(w, tmpl+".html", p)
+	err := templates[tmpl].ExecuteTemplate(w, baseTmplName, p)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}
