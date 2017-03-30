@@ -21,7 +21,7 @@ var tmplDir = "tmpl"
 var dataDir = "data"
 var actions = []string{}
 var validPath *regexp.Regexp
-var templates = template.Must(template.ParseFiles(tmplDir + "/edit.html", tmplDir + "/view.html"))
+//var templates = template.Must(template.ParseFiles(tmplDir + "/edit.html", tmplDir + "/view.html"))
 
 func main() {
 	http.HandleFunc("/view/", makeHandler(viewHandler))
