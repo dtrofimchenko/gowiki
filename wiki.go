@@ -73,9 +73,9 @@ func viewHandler(w http.ResponseWriter, r *http.Request, title string) {
 		return
 	}
 	pageLink := regexp.MustCompile("\\[(.+)\\]")
-	p.Body = pageLink.ReplaceAllFunc(p.Body, func(s []byte) []byte {
-		m := s[1 : len(s)-1]
-		ret := fmt.Sprintf("<a href=\"%s\">%s</a>", m, m)
+	p.Body = pageLink.ReplaceAllFunc(p.Body, func(match []byte) []byte {
+		title := match[1 : len(match)-1]
+		ret := fmt.Sprintf("<a href=\"%s\">%s</a>", title, title)
 		return []byte(ret)
 	})
 	renderTemplate(w, "view", p)
