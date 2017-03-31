@@ -5,11 +5,12 @@
 package main
 
 import (
-	"html/template"
+	"text/template"
 	"io/ioutil"
 	"net/http"
 	"regexp"
 	"strings"
+	"fmt"
 )
 
 type Page struct {
@@ -71,6 +72,12 @@ func viewHandler(w http.ResponseWriter, r *http.Request, title string) {
 		http.Redirect(w, r, "/edit/"+title, http.StatusFound)
 		return
 	}
+	pageLink := regexp.MustCompile("\\[(.+)\\]")
+	p.Body = pageLink.ReplaceAllFunc(p.Body, func(s []byte) []byte {
+		m := s[1 : len(s)-1]
+		ret := fmt.Sprintf("<a href=\"%s\">%s</a>", m, m)
+		return []byte(ret)
+	})
 	renderTemplate(w, "view", p)
 }
 
