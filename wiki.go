@@ -11,6 +11,7 @@ import (
 	"regexp"
 	"strings"
 	"fmt"
+	"expvar"
 )
 
 type Page struct {
@@ -27,6 +28,9 @@ var templates = map[string]*template.Template{
 	"edit": nil,
 }
 var baseTmplName = "base";
+var (
+  counts = expvar.NewMap("counters")
+)
 
 func main() {
 	http.HandleFunc("/view/", makeHandler(viewHandler))
